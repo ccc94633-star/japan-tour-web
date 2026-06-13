@@ -4,184 +4,251 @@ import { RouterLink } from 'vue-router'
 
 <template>
   <div class="home">
-    <div class="bg-deco">
-      <span class="sakura s1">🌸</span>
-      <span class="sakura s2">🌸</span>
-      <span class="sakura s3">🌸</span>
-      <span class="sakura s4">🌸</span>
-      <span class="sakura s5">🌸</span>
+    <div class="sun" aria-hidden="true"></div>
+    <div class="cloud cloud-one" aria-hidden="true"></div>
+    <div class="cloud cloud-two" aria-hidden="true"></div>
+    <div class="wave-field" aria-hidden="true">
+      <span v-for="n in 7" :key="n"></span>
     </div>
 
     <div class="content">
-      <h1 class="title">日本城市旅遊導覽</h1>
-      <p class="subtitle">探索東京・熊本・名古屋</p>
+      <div class="title-block">
+        <p class="eyebrow">東海道・旅之案内</p>
+        <h1 class="title"><span>日本</span>城市旅遊導覽</h1>
+        <p class="subtitle">東京・熊本・名古屋</p>
+      </div>
 
       <RouterLink to="/cities" class="japan-card">
-        <div class="map-wrap">
-          <span class="map-emoji">🗾</span>
-          <div class="pin p1">📍<span>東京</span></div>
-          <div class="pin p2">📍<span>名古屋</span></div>
-          <div class="pin p3">📍<span>熊本</span></div>
+        <div class="print-frame">
+          <div class="mountain" aria-hidden="true">
+            <span class="snow"></span>
+          </div>
+          <div class="pine pine-one" aria-hidden="true"></div>
+          <div class="pine pine-two" aria-hidden="true"></div>
+          <div class="route-stamps">
+            <span>東<br>京</span>
+            <span>名<br>古<br>屋</span>
+            <span>熊<br>本</span>
+          </div>
         </div>
         <div class="card-footer">
-          <span class="cta">點擊開始探索</span>
-          <span class="arrow-right">→</span>
+          <span class="seal">旅</span>
+          <span class="cta">翻開旅帖，開始探索</span>
+          <span class="arrow-right">›</span>
         </div>
       </RouterLink>
 
       <div class="icons-row">
-        <span>⛩️ 神社</span>
-        <span>🍜 美食</span>
-        <span>🏯 名城</span>
-        <span>🎎 文化</span>
+        <span>神社</span><i></i>
+        <span>美食</span><i></i>
+        <span>名城</span><i></i>
+        <span>文化</span>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 .home {
   min-height: 100vh;
-  background: linear-gradient(160deg, #fff5f5 0%, #fff0f8 50%, #f0f4ff 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
-  font-family: 'Microsoft JhengHei', sans-serif;
+  padding: 52px 20px 72px;
+  isolation: isolate;
 }
 
-/* 背景飄落裝飾 */
-.bg-deco { position: absolute; inset: 0; pointer-events: none; }
-
-.sakura {
+.home::before {
+  content: "";
   position: absolute;
-  font-size: 28px;
-  opacity: 0.25;
-  animation: fall linear infinite;
-}
-.s1 { left: 8%;  animation-duration: 9s;  animation-delay: 0s;   top: -40px; }
-.s2 { left: 25%; animation-duration: 12s; animation-delay: 2s;   top: -40px; }
-.s3 { left: 55%; animation-duration: 10s; animation-delay: 4s;   top: -40px; }
-.s4 { left: 75%; animation-duration: 8s;  animation-delay: 1s;   top: -40px; }
-.s5 { left: 90%; animation-duration: 11s; animation-delay: 3s;   top: -40px; }
-
-@keyframes fall {
-  0%   { transform: translateY(0)   rotate(0deg);   opacity: 0.25; }
-  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  inset: 18px;
+  border: 1px solid rgba(37, 35, 31, 0.45);
+  outline: 5px double rgba(37, 35, 31, 0.18);
+  outline-offset: -10px;
+  z-index: -1;
 }
 
-/* 主內容 */
+.sun {
+  position: absolute;
+  top: 9%;
+  right: 10%;
+  width: clamp(110px, 20vw, 190px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--vermilion);
+  opacity: 0.9;
+  z-index: -2;
+}
+
 .content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 28px;
-  padding: 32px 16px;
+  gap: 25px;
+  width: min(100%, 430px);
   z-index: 1;
 }
 
-.title {
-  font-size: 32px;
-  font-weight: 800;
-  color: #c0392b;
+.title-block {
   text-align: center;
-  letter-spacing: 2px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--vermilion);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.45em;
+}
+
+.title {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(30px, 8vw, 44px);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  line-height: 1.25;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.title span {
+  color: var(--indigo);
+  font-size: 1.2em;
 }
 
 .subtitle {
-  font-size: 15px;
-  color: #888;
-  text-align: center;
-  margin-top: -20px;
+  margin: 9px 0 0;
+  color: rgba(37, 35, 31, 0.72);
+  font-size: 14px;
+  letter-spacing: 0.38em;
 }
 
-/* 可點擊的日本地圖卡片 */
 .japan-card {
+  width: min(100%, 360px);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  background: #fff;
-  border: 3px solid #e8c0c0;
-  border-radius: 24px;
-  padding: 32px 40px 24px;
+  background: var(--washi-light);
+  border: 2px solid var(--ink);
+  padding: 8px;
   text-decoration: none;
-  box-shadow: 0 8px 32px rgba(192, 57, 43, 0.12);
-  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-  cursor: pointer;
-  width: 300px;
+  box-shadow: 8px 9px 0 rgba(23, 70, 107, 0.9);
+  transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
 .japan-card:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 16px 48px rgba(192, 57, 43, 0.22);
-  border-color: #c0392b;
+  transform: translate(-3px, -3px);
+  box-shadow: 12px 13px 0 rgba(23, 70, 107, 0.9);
 }
 
-/* 地圖區域 */
-.map-wrap {
+.print-frame {
   position: relative;
-  width: 160px;
-  height: 160px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height: 228px;
+  overflow: hidden;
+  border: 1px solid rgba(37, 35, 31, 0.75);
+  background:
+    repeating-radial-gradient(ellipse at 50% 115%, transparent 0 17px, rgba(248, 239, 217, 0.9) 18px 21px, transparent 22px 30px),
+    var(--indigo);
 }
 
-.map-emoji {
-  font-size: 120px;
-  line-height: 1;
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
-}
-
-/* 城市 Pin */
-.pin {
+.mountain {
   position: absolute;
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  font-size: 11px;
-  font-weight: 700;
-  color: #c0392b;
-  white-space: nowrap;
-  background: rgba(255,255,255,0.85);
-  border-radius: 999px;
-  padding: 2px 7px 2px 2px;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.12);
+  left: 50%;
+  bottom: 31px;
+  width: 205px;
+  height: 135px;
+  transform: translateX(-50%);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  background: #d5c7a7;
 }
 
-.p1 { top: 10px;  right: -10px; }
-.p2 { bottom: 46px; right: -18px; }
-.p3 { bottom: 14px; left: -8px; }
+.snow {
+  position: absolute;
+  inset: 0;
+  background: var(--washi-light);
+  clip-path: polygon(50% 0, 70% 40%, 60% 35%, 51% 49%, 42% 34%, 31% 41%);
+}
 
-/* 底部 CTA */
+.pine {
+  position: absolute;
+  bottom: 12px;
+  width: 72px;
+  height: 102px;
+  border-left: 8px solid var(--ink);
+}
+
+.pine::before,
+.pine::after {
+  content: "";
+  position: absolute;
+  width: 70px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--moss);
+  border: 2px solid var(--ink);
+}
+
+.pine::before { top: 2px; left: -28px; transform: rotate(-16deg); }
+.pine::after { top: 30px; left: -7px; transform: rotate(15deg); }
+.pine-one { left: 18px; transform: scale(0.85); }
+.pine-two { right: -12px; transform: scale(1.15); }
+
+.route-stamps {
+  position: absolute;
+  inset: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.route-stamps span {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  min-height: 52px;
+  padding: 5px 0;
+  color: var(--washi-light);
+  background: var(--vermilion);
+  border: 2px solid var(--washi-light);
+  outline: 1px solid var(--vermilion);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+.route-stamps span:nth-child(2) { margin-top: 72px; }
+.route-stamps span:nth-child(3) { margin-top: 18px; }
+
 .card-footer {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-top: 20px;
-  border-top: 1px solid #f0e0e0;
-  padding-top: 18px;
-  width: 100%;
-  justify-content: center;
+  gap: 11px;
+  padding: 16px 12px 9px;
+  color: var(--ink);
+}
+
+.seal {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  color: var(--washi-light);
+  background: var(--vermilion);
+  font-size: 17px;
+  font-weight: 800;
 }
 
 .cta {
-  font-size: 16px;
-  font-weight: 700;
-  color: #c0392b;
-  letter-spacing: 1px;
+  flex: 1;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
 }
 
 .arrow-right {
-  font-size: 18px;
-  color: #c0392b;
+  color: var(--vermilion);
+  font-size: 27px;
   transition: transform 0.2s;
 }
 
@@ -189,17 +256,60 @@ import { RouterLink } from 'vue-router'
   transform: translateX(4px);
 }
 
-/* 底部圖示列 */
 .icons-row {
   display: flex;
-  gap: 20px;
-  font-size: 13px;
-  color: #999;
+  align-items: center;
+  gap: 9px;
+  color: rgba(37, 35, 31, 0.7);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
 }
 
-.icons-row span {
+.icons-row i {
+  width: 3px;
+  height: 3px;
+  background: var(--vermilion);
+  transform: rotate(45deg);
+}
+
+.wave-field {
+  position: absolute;
+  right: -30px;
+  bottom: -58px;
+  left: -30px;
   display: flex;
-  align-items: center;
+  justify-content: center;
   gap: 4px;
+  z-index: -2;
+  opacity: 0.72;
+}
+
+.wave-field span {
+  width: 16%;
+  aspect-ratio: 1;
+  border: 10px double var(--indigo);
+  border-right-color: transparent;
+  border-radius: 50%;
+  transform: rotate(35deg);
+}
+
+.cloud {
+  position: absolute;
+  width: 150px;
+  height: 18px;
+  border-top: 3px solid var(--indigo);
+  border-bottom: 1px solid var(--indigo);
+  opacity: 0.45;
+  z-index: -1;
+}
+
+.cloud-one { top: 16%; left: -35px; }
+.cloud-two { top: 30%; right: -65px; width: 200px; }
+
+@media (max-width: 420px) {
+  .home { padding-inline: 30px; }
+  .home::before { inset: 11px; }
+  .print-frame { height: 210px; }
 }
 </style>

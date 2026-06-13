@@ -16,8 +16,7 @@ const cityKey = computed(() => route.params.city)
 
 
 const activeType = computed(() => {
-  console.log(`按到什麼類別:${route.query.type}`);
-  return route.query.type || 'all';
+  return route.query.type || 'all'
 })
 
 const cityInfo = computed(() => cities.find(c => c.city === cityKey.value))
@@ -29,7 +28,6 @@ const filteredSpots = computed(() => {
 })
 
 const typeLabel = { food: '美食', spot: '景點', culture: '文化' }
-const tagColor = { food: '#ff7043', spot: '#2196f3', culture: '#9c27b0' }
 </script>
 
 <template>
@@ -37,13 +35,16 @@ const tagColor = { food: '#ff7043', spot: '#2196f3', culture: '#9c27b0' }
     <RouterLink to="/cities" class="back-link">← 返回城市列表</RouterLink>
 
     <header class="header">
-      <h1>{{ cityInfo?.cityName }}</h1>
-      <p class="subtitle">共 {{ filteredSpots.length }} 個景點</p>
+      <div class="title-row">
+        <p class="vertical-label">名所<br>細見</p>
+        <h1>{{ cityInfo?.cityName }}</h1>
+      </div>
+      <p class="subtitle">收錄 {{ filteredSpots.length }} 處風土名勝</p>
     </header>
 
     <!-- Filter Tabs -->
     <div class="filters">
-      <RouterLink v-for="type in ['all', 'food', 'spot', 'culture']" :key="f" class="filter-btn"
+      <RouterLink v-for="type in ['all', 'food', 'spot', 'culture']" :key="type" class="filter-btn"
         :class="{ active: activeType === type }" active-class="" exact-active-class=""
         :to="{ path: `/cities/${cityKey}`, query: type === 'all' ? {} : { type: type } }">
         {{ type === 'all' ? '全部' : typeLabel[type] }}
@@ -53,11 +54,11 @@ const tagColor = { food: '#ff7043', spot: '#2196f3', culture: '#9c27b0' }
     <!-- Spot List -->
     <main class="spot-list">
       <RouterLink v-for="spot in filteredSpots" :key="spot.id"
-        :to="{ path: `/cities/${cityKey}/spots/${spot.id}`, query: activeType !== 'all' ? { type: activeType } : {} }" ;
+        :to="{ path: `/cities/${cityKey}/spots/${spot.id}`, query: activeType !== 'all' ? { type: activeType } : {} }"
         class="spot-card" :data-type="spot.type">
         <div class="spot-info">
           <span class="spot-name">{{ spot.name }}</span>
-          <span class="type-tag" :style="{ background: tagColor[spot.type] }">
+          <span class="type-tag">
             {{ typeLabel[spot.type] }}
           </span>
         </div>
@@ -85,103 +86,116 @@ body {
 }
 
 .page {
-  max-width: 480px;
+  width: min(100% - 36px, 620px);
+  min-height: 100vh;
   margin: 0 auto;
-  padding: 28px 16px;
+  padding: 40px 0 70px;
 }
 
 .back-link {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  color: #1a73e8;
+  color: var(--indigo);
   text-decoration: none;
-  font-size: 14px;
-  margin-bottom: 14px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  border-bottom: 1px solid currentColor;
 }
 
-.back-link:hover {
-  text-decoration: underline;
+.header {
+  margin: 35px 0 24px;
+  border-bottom: 3px double var(--ink);
 }
 
 .header h1 {
-  font-size: 26px;
-  font-weight: 700;
-  color: #222;
-  margin-bottom: 4px;
+  margin: 0;
+  color: var(--indigo-deep);
+  font-size: clamp(52px, 16vw, 82px);
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  line-height: 1;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.vertical-label {
+  margin: 0;
+  padding: 9px 8px;
+  color: var(--washi-light);
+  background: var(--vermilion);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.2;
+  text-align: center;
 }
 
 .header .subtitle {
-  font-size: 14px;
-  color: #999;
-  margin-bottom: 24px;
+  margin: 15px 0 12px;
+  color: rgba(37, 35, 31, 0.65);
+  font-size: 13px;
+  letter-spacing: 0.2em;
 }
 
 .filters {
   display: flex;
-  gap: 10px;
-  margin-bottom: 22px;
-  flex-wrap: wrap;
+  margin-bottom: 28px;
+  border: 1px solid var(--ink);
 }
 
 .filter-btn {
-  padding: 8px 20px;
-  border: 2px solid #ddd;
-  border-radius: 999px;
-  background: #fff;
-  color: #666;
-  font-size: 14px;
-  cursor: pointer;
-  font-family: inherit;
+  flex: 1;
+  padding: 10px 4px;
+  color: var(--ink);
+  background: rgba(248, 239, 217, 0.4);
+  border-right: 1px solid var(--ink);
+  font-size: 13px;
+  font-weight: 800;
+  text-align: center;
   text-decoration: none;
-  transition: all 0.15s;
+  transition: color 150ms ease, background 150ms ease;
 }
 
-.filter-btn:hover {
-  border-color: #1a73e8;
-  color: #1a73e8;
-}
+.filter-btn:last-child { border-right: 0; }
+.filter-btn:hover { color: var(--vermilion); }
 
 .filter-btn.active {
-  border-color: #1a73e8;
-  background: #1a73e8;
-  color: #fff;
+  color: var(--washi-light);
+  background: var(--indigo);
 }
 
 .spot-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 9px;
 }
 
 .spot-card {
   display: flex;
   align-items: center;
-  background: #fff;
-  border-radius: 14px;
-  padding: 16px 20px;
+  min-height: 70px;
+  padding: 12px 13px 12px 17px;
+  color: var(--ink);
+  background: rgba(248, 239, 217, 0.54);
+  border: 1px solid rgba(37, 35, 31, 0.62);
   text-decoration: none;
-  color: #333;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: transform 0.15s;
-  cursor: pointer;
+  box-shadow: 3px 3px 0 rgba(37, 35, 31, 0.16);
+  transition: transform 150ms ease, background 150ms ease;
 }
 
 .spot-card:hover {
-  transform: translateY(-2px);
+  transform: translateX(5px);
+  background: var(--washi-light);
 }
 
-.spot-card[data-type="food"] {
-  border-left: 4px solid #ff7043;
-}
-
-.spot-card[data-type="spot"] {
-  border-left: 4px solid #2196f3;
-}
-
-.spot-card[data-type="culture"] {
-  border-left: 4px solid #9c27b0;
-}
+.spot-card[data-type="food"] { border-left: 6px solid var(--vermilion); }
+.spot-card[data-type="spot"] { border-left: 6px solid var(--indigo); }
+.spot-card[data-type="culture"] { border-left: 6px solid var(--moss); }
 
 .spot-info {
   flex: 1;
@@ -192,34 +206,28 @@ body {
 
 .spot-name {
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 900;
+  letter-spacing: 0.08em;
 }
 
 .type-tag {
-  padding: 3px 10px;
-  border-radius: 999px;
-  color: #fff;
-  font-size: 12px;
+  padding: 3px 6px;
+  color: var(--vermilion);
+  border: 1px solid currentColor;
+  font-size: 10px;
+  font-weight: 900;
   white-space: nowrap;
 }
 
 .arrow {
-  font-size: 22px;
-  color: #bbb;
+  color: var(--vermilion);
+  font-size: 25px;
 }
 
 .empty {
   text-align: center;
-  color: #aaa;
+  color: rgba(37, 35, 31, 0.58);
   padding: 40px 0;
   font-size: 15px;
-}
-
-.route-hint {
-  margin-top: 32px;
-  text-align: center;
-  font-size: 12px;
-  color: #aaa;
-  letter-spacing: 0.5px;
 }
 </style>
