@@ -13,7 +13,9 @@ const tagColor = { food: '#ff7043', spot: '#2196f3', culture: '#9c27b0' }
 
 <template>
   <div class="page">
-    <RouterLink :to="`/cities/${route.params.city}`" class="back-link">← 返回上一頁</RouterLink>
+      <RouterLink
+      :to="{ path: `/cities/${route.params.city}`, query: route.query.type ? { type: route.query.type } : {} }"
+      class="back-link">← 返回上一頁</RouterLink>
 
     <!-- 當 spot 資料存在（不是 null/undefined）時，裡面的內容才會顯示。防止資料還沒載入時就渲染造成錯誤。 -->
     <template v-if="spot">

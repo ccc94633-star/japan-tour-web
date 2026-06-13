@@ -6,7 +6,19 @@ import { cities, spots } from '../data'
 const route = useRoute()
 
 const cityKey = computed(() => route.params.city)
-const activeType = computed(() => route.query.type || 'all')
+
+
+// const activeType = computed(() => {
+
+//   //console.log(`現在按了哪個分類: ${route.query.type || 'all'}`);
+//   return route.query.type || 'all'
+// })
+
+
+const activeType = computed(() => {
+  console.log(`按到什麼類別:${route.query.type}`);
+  return route.query.type || 'all';
+})
 
 const cityInfo = computed(() => cities.find(c => c.city === cityKey.value))
 
@@ -17,7 +29,7 @@ const filteredSpots = computed(() => {
 })
 
 const typeLabel = { food: '美食', spot: '景點', culture: '文化' }
-const tagColor  = { food: '#ff7043', spot: '#2196f3', culture: '#9c27b0' }
+const tagColor = { food: '#ff7043', spot: '#2196f3', culture: '#9c27b0' }
 </script>
 
 <template>
@@ -31,28 +43,18 @@ const tagColor  = { food: '#ff7043', spot: '#2196f3', culture: '#9c27b0' }
 
     <!-- Filter Tabs -->
     <div class="filters">
-      <RouterLink
-        v-for="f in ['all', 'food', 'spot', 'culture']"
-        :key="f"
-        class="filter-btn"
-        :class="{ active: activeType === f }"
-        active-class=""
-        exact-active-class=""
-        :to="{ path: `/cities/${cityKey}`, query: f === 'all' ? {} : { type: f } }"
-      >
-        {{ f === 'all' ? '全部' : typeLabel[f] }}
+      <RouterLink v-for="type in ['all', 'food', 'spot', 'culture']" :key="f" class="filter-btn"
+        :class="{ active: activeType === type }" active-class="" exact-active-class=""
+        :to="{ path: `/cities/${cityKey}`, query: type === 'all' ? {} : { type: type } }">
+        {{ type === 'all' ? '全部' : typeLabel[type] }}
       </RouterLink>
     </div>
 
     <!-- Spot List -->
     <main class="spot-list">
-      <RouterLink
-        v-for="spot in filteredSpots"
-        :key="spot.id"
-        :to="`/cities/${cityKey}/spots/${spot.id}`"
-        class="spot-card"
-        :data-type="spot.type"
-      >
+      <RouterLink v-for="spot in filteredSpots" :key="spot.id"
+        :to="{ path: `/cities/${cityKey}/spots/${spot.id}`, query: activeType !== 'all' ? { type: activeType } : {} }" ;
+        class="spot-card" :data-type="spot.type">
         <div class="spot-info">
           <span class="spot-name">{{ spot.name }}</span>
           <span class="type-tag" :style="{ background: tagColor[spot.type] }">
@@ -169,9 +171,17 @@ body {
   transform: translateY(-2px);
 }
 
-.spot-card[data-type="food"]    { border-left: 4px solid #ff7043; }
-.spot-card[data-type="spot"]    { border-left: 4px solid #2196f3; }
-.spot-card[data-type="culture"] { border-left: 4px solid #9c27b0; }
+.spot-card[data-type="food"] {
+  border-left: 4px solid #ff7043;
+}
+
+.spot-card[data-type="spot"] {
+  border-left: 4px solid #2196f3;
+}
+
+.spot-card[data-type="culture"] {
+  border-left: 4px solid #9c27b0;
+}
 
 .spot-info {
   flex: 1;
